@@ -1,0 +1,50 @@
+<?php
+function timestamp() {
+    return '[' . date("d.m.Y H:i") . "]";
+}
+
+function getIPAddress() {  
+    //whether ip is from the share internet  
+    if(!empty($_SERVER['HTTP_CLIENT_IP'])) {  
+        $ip = $_SERVER['HTTP_CLIENT_IP'];  
+    }  
+
+    //whether ip is from the proxy  
+    elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {  
+        $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];  
+     }  
+    
+     //whether ip is from the remote address  
+    else{  
+        $ip = $_SERVER['REMOTE_ADDR'];  
+     }  
+     return $ip;  
+}
+
+function writeToLog($host, $file_name, $failed) {
+    $log_message = 
+        timestamp() . " " . 
+        getIPAddress() . " " . 
+        ($failed ? 'failed ' : 'successfull ') . 
+        $file_name;
+    
+    $log = fopen('../.log', 'a');
+    fwrite($log, "\r\n" . $log_message);
+    fclose($log);
+}
+
+
+$_failed = true;
+$_host = getIPAddress();
+$_auth = isset($_GET["auth"]) ? $_GET["auth"] : "";
+$file_name = isset($_GET["name"]) ? $_GET["name"] : "";
+
+if (md5($_auth) == fgets(fopen("../.env", "r")) && $file_name != "") {
+    $file_data = file_get_contents('php://input');
+
+    file_put_contents("../" . $file_name, $file_data);
+    $_failed = false;
+} else
+    echo "invalid credentials or empty filename";
+
+writeToLog($_host, $file_name, $_failed);

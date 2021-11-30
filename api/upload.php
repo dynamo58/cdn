@@ -44,7 +44,7 @@ $file_name = isset($_GET["name"]) ? $_GET["name"] : "";
 if (md5($_auth) == fgets(fopen("../.env", "r")) && $file_name != "") {
     $file_data = file_get_contents('php://input');
 
-    file_put_contents("../files/" . $file_name, $file_data);
+    file_put_contents("../s/" . $file_name, $file_data);
     $_failed = false;
 } else
     echo "invalid credentials or empty filename";

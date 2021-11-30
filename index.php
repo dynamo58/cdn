@@ -50,7 +50,7 @@
 
         # Lists the content of a directory and all subdirs in <ul> > <li> fashion
         function CreateTree($inv_endpoints, $dir, $curr_dirname) {
-            if ($dir == "./files/")
+            if ($dir == "./s/")
                 echo "<ul>";
             else
                 echo "<ul class=\"sub-dir\">" . $curr_dirname;
@@ -71,7 +71,7 @@
             echo "</ul>";
         }
 
-        CreateTree($invalid_endpoints, "./files/", "./files/");
+        CreateTree($invalid_endpoints, "./s/", "./s/");
         ?>
     </body>
 </html>

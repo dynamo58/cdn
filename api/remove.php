@@ -44,7 +44,7 @@ $file_name = isset($_GET["name"]) ? $_GET["name"] : "";
 if (md5($_auth) == fgets(fopen("../.env", "r")) && $file_name != "") {
     unlink("../s/" . $file_name);
     $_failed = false;
-    echo "file deletion successful"
+    echo "file deletion successful";
 } else
     echo "invalid credentials or empty filename";
 

@@ -68,6 +68,7 @@
 
                     if (is_dir($file_path))
                         CreateTree($inv_endpoints, $file_path . "/", $file);
+                        
                     else
                         echo "<li class=\"is-link\"> <a href=\"" . $dir . $file . "\">" . $file . "</a></li>";
                 }

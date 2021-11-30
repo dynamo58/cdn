@@ -1,4 +1,5 @@
 <?php
+
 function timestamp() {
     return '[' . date("d.m.Y H:i") . "]";
 }
@@ -21,6 +22,7 @@ function getIPAddress() {
      return $ip;  
 }
 
+# logs basic information for incoming file uploads
 function writeToLog($host, $file_name, $failed) {
     $log_message = 
         timestamp() . " " . 
@@ -33,18 +35,19 @@ function writeToLog($host, $file_name, $failed) {
     fclose($log);
 }
 
-
 $_failed = true;
 $_host = getIPAddress();
 $_auth = isset($_GET["auth"]) ? $_GET["auth"] : "";
 $file_name = isset($_GET["name"]) ? $_GET["name"] : "";
 
+# check if the auth matches with the stored hash
 if (md5($_auth) == fgets(fopen("../.env", "r")) && $file_name != "") {
     $file_data = file_get_contents('php://input');
 
-    file_put_contents("../" . $file_name, $file_data);
+    file_put_contents("../files/" . $file_name, $file_data);
     $_failed = false;
 } else
     echo "invalid credentials or empty filename";
+
 
 writeToLog($_host, $file_name, $_failed);

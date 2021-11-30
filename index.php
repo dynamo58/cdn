@@ -34,19 +34,23 @@
             ul.sub-dir:before {
                 content: '📁';
             }
-        </style>        
+
+            @media screen and (max-width:800px)  {
+                * { font-size: 1rem }
+            }
+        </style>
     </head>
     <body>
         <h1>smolik.xyz CDN server</h1>
         <p>Available endpoints:</p>
         
         <?php
+        # disable displaying endpoints that shall not be displayed (those should also be disabled via .htaccess)
+        $invalid_endpoints = array("index.php", ".env", ".", "..", "api", "domains", "subdom", ".htaccess", ".log");
 
-        //echo is_dir("./a/b");
-        $invalid_endpoints = array("index.php", ".", "..", "api", "domains", "subdom", ".htaccess", "log", ".log", "upload");
-
+        # Lists the content of a directory and all subdirs in <ul> > <li> fashion
         function CreateTree($inv_endpoints, $dir, $curr_dirname) {
-            if ($dir == "./")
+            if ($dir == "./upload/")
                 echo "<ul>";
             else
                 echo "<ul class=\"sub-dir\">" . $curr_dirname;
@@ -60,14 +64,14 @@
                         CreateTree($inv_endpoints, $dir_path, $file);
                     }
                     else
-                        echo "<li class=\"is-link\"> <a href=\"" . $dir . "/" . $file . "\">" . $file . "</a></li>";
+                        echo "<li class=\"is-link\"> <a href=\"" . $dir . $file . "\">" . $file . "</a></li>";
                 }
             }
-                
+
             echo "</ul>";
         }
 
-        CreateTree($invalid_endpoints, "./", './');
+        CreateTree($invalid_endpoints, "./upload/", "./upload/");
         ?>
     </body>
 </html>

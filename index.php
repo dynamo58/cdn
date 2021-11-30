@@ -14,12 +14,15 @@
                 text-decoration: none;
                 text-align: center;
             }
+
             a {
                 color: #ab5;
             }
+
             body {
                 margin: 2em;
             }
+
             ul,
             li,
             p {
@@ -35,8 +38,12 @@
                 content: '📁';
             }
 
-            @media screen and (max-width:800px)  {
-                * { font-size: 1rem }
+            @media screen and (max-width:800px) and (min-width: 600px)  {
+                * { font-size: 1.3rem }
+            }
+
+            @media screen and (max-width:599px)  {
+                * { font-size: 1.1rem }
             }
         </style>
     </head>
@@ -59,10 +66,8 @@
                 if (!in_array($file, $inv_endpoints)) {
                     $file_path = $dir . $file;
 
-                    if (is_dir($file_path)) {
-                        $dir_path = $file_path . "/";
-                        CreateTree($inv_endpoints, $dir_path, $file);
-                    }
+                    if (is_dir($file_path))
+                        CreateTree($inv_endpoints, $file_path . "/", $file);
                     else
                         echo "<li class=\"is-link\"> <a href=\"" . $dir . $file . "\">" . $file . "</a></li>";
                 }
